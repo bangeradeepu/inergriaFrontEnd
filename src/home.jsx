@@ -38,7 +38,7 @@ const handleSubmit = async() => {
         Success
       </Button>
         <input type="text" name="" value={textFeild} onChange={(e) => setTextFeild(e.target.value)} id="" />
-      <button onClick={handleSubmit}>Submitss</button>
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   )
 }
