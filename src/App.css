@@ -1,0 +1,237 @@
+@font-face {
+    font-family: 'Gilroy';
+    src: local('Gilroy'), url(./fonts/Gilroy-Regular.ttf) format('truetype');
+  }
+  body{
+    background-color: #F6F6F6;
+    font-family: 'Gilroy', 'Helvetica Neue', sans-serif; 
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+  }
+  body::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: #e2dddd;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 8px;
+  }
+  .flex{
+    display: flex;
+  }
+
+  .black{
+    background-color: black;
+  }
+  .flex-1{
+    flex: 1;  
+  }
+  .space-between{
+    justify-content: space-between;
+  }
+  .space-evenly{
+    justify-content: space-evenly;
+  }
+  .flex-end{
+    justify-content: flex-end;
+  }
+  .justify-content-center{
+    justify-content: center;
+  }
+  .flex-wrap{
+    flex-wrap: wrap;
+  }
+  .text-align-center{
+    text-align: center;
+  }
+  /* Padding */
+  .pd-05{
+    padding: 0.5vw;
+  }
+  .pd-1{
+    padding: 1vw;
+  }
+  .pd-2{
+    padding: 2vw;
+  }
+  .pd-3{
+    padding: 3vw;
+  }
+  .pd-4{
+    padding: 4vw;
+  }
+  .pd-5{
+    padding: 5vw;
+  }
+  /* Margin Top */
+  .mt-1{
+    margin-top: 1vw;
+  }
+  .mt-2{
+    margin-top: 2vw;
+  }
+  .mt-3{
+    margin-top: 3vw;
+  }
+  .mt-4{
+    margin-top: 4vw;
+  }
+  .mt-5{
+    margin-top: 5vw;
+  }
+  
+  
+  /* Margin Bottom */
+  .mb-1{
+    margin-bottom: 1vw;
+  }
+  .mb-2{
+    margin-bottom: 2vw;
+  }
+  .mb-3{
+    margin-bottom: 3vw;
+  }
+  .mb-4{
+    margin-bottom: 4vw;
+  }
+  .mb-5{
+    margin-bottom: 5vw;
+  }
+  /* Gaps */
+.g03{
+    gap: 0.3vw;
+  }
+  .g1{
+    gap: 1vw;
+  }
+  .g2{
+    gap: 2vw;
+  }
+  .g3{
+    gap: 3vw;
+  }
+  .g4{
+    gap: 4vw;
+  }
+  .g5{
+    gap: 5vw;
+  }
+  .g6{
+    gap: 6vw;
+  }
+  .fw-5{
+    font-weight: 5;
+  }
+  .fw-10{
+    font-weight: 10;
+  }
+  .fw-50{
+    font-weight: 50;
+  }
+  .fw-100{
+    font-weight: 100;
+  }
+  .fw-200{
+    font-weight: 200;
+  }
+  .fw-300{
+    font-weight: 300;
+  }
+  .fw-400{
+    font-weight: 400;
+  }
+  .fw-500{
+    font-weight: 500;
+  }
+  .fw-600{
+    font-weight: 600;
+  }
+  .fw-700{
+    font-weight: 700;
+  }
+
+  /* Font Size */
+.f5{font-size: 0.5vw;}
+.f8 { font-size: 0.8vw; }
+.f9 { font-size: 0.9vw; }
+.f10 { font-size: 1vw; }
+.f11 { font-size: 1.1vw; }
+.f12 { font-size: 1.2vw; }
+.f13 { font-size: 1.3vw; }
+.f14 { font-size: 1.4vw; }
+.f15 { font-size: 1.5vw; }
+.f16 { font-size: 1.6vw; }
+.f17 { font-size: 1.7vw; }
+.f18 { font-size: 1.8vw; }
+.f19 { font-size: 1.9vw; }
+.f20 { font-size: 2vw; }
+.f21 { font-size: 2.1vw; }
+.f22 { font-size: 2.2vw; }
+.f23 { font-size: 2.3vw; }
+.f24 { font-size: 2.4vw; }
+.f25 { font-size: 2.5vw; }
+.f26 { font-size: 2.6vw; }
+.f27 { font-size: 2.7vw; }
+.f28 { font-size: 2.8vw; }
+.f29 { font-size: 2.9vw; }
+.f30 { font-size: 3vw; }
+.f31 { font-size: 3.1vw; }
+.f32 { font-size: 3.2vw; }
+.f33 { font-size: 3.3vw; }
+.f34 { font-size: 3.4vw; }
+.f35 { font-size: 3.5vw; }
+.f36 { font-size: 3.6vw; }
+.f37 { font-size: 3.7vw; }
+.f38 { font-size: 3.8vw; }
+.f39 { font-size: 3.9vw; }
+.f40 { font-size: 4vw; }
+
+  .align-item-center{
+    align-items: center;
+  }
+  .c-pointer{
+    cursor: pointer;
+  }
+  .text-decoration-none{
+    text-decoration: none;
+  }
+  .bg-white{
+    background-color: white;
+  }
+  .primary{
+    color: rgb(37, 153, 37);
+  }
+  .primary-bg{
+    color: rgb(37, 153, 37);
+  }
+.box-1{
+  width: 50%;
+}
+.solarBanner{
+  width: 45vw;
+}
+.logoBanner{
+  width: 4vw;
+}
+
+.ihyq{
+  width: 8em;
+}
+@media (max-width:665px) {
+  .hsjj{
+    display: none;
+  }
+  .box-1{
+    width: 98%;
+    height: 100%;
+    border-radius: 1vw;
+  }
+  .flex-cols{
+    flex-direction: column;
+  }
+}

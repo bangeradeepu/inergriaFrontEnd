@@ -1,6 +1,16 @@
 // InventoryManage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import './App.css';
+import Typography from "@mui/material/Typography";
+import { TableVirtuoso } from 'react-virtuoso';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import {
   Button,
   Dialog,
@@ -147,6 +157,7 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
   const handleCloseCreateModal =() => {
     setOpenCreateModal(false);
     setErrorMessage('');
+    setItemName('');
   }
   const handleSearch = (searchTerm) => {
     const filteredItems = inventoryData.filter(
@@ -156,11 +167,29 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
     );
     setFilteredInventoryData(filteredItems);
   };
+
+  const formatDateTime = (dateString) => {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const date = new Date(dateString);
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert 24-hour time to 12-hour time
+    return `${dayOfWeek}, ${day}/${month}/${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
+  };
   return (
     <div>
-      <br />
-      <br />
-     <div className="d-flex space-between">
+       <Typography
+                  sx={{ fontSize: 28 }}
+                >
+                  Inventory Management
+                </Typography>
+     <div className="flex space-between mt-1">
      <TextField
         type="text"
         value={searchBox}
@@ -171,7 +200,11 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
         placeholder="Search Inventory"
         size="small"
       />
-     <Button onClick={handleOpenCreateModal}  style={{ color: "white", backgroundColor: "black" }}>Create Inventory</Button>
+          <div className="flex g2">
+          <Button onClick={handleOpenCreateModal} variant="outlined"  >Inventory Logs</Button>
+
+<Button onClick={handleOpenCreateModal} variant="contained" >Create Inventory</Button>
+          </div>
      </div>
       <Dialog open={openCreateModal} onClose={handleCloseCreateModal} fullWidth>
           <DialogTitle>Create Inventory</DialogTitle>
@@ -201,23 +234,86 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
           </DialogContent>
           
           <DialogActions>
-            <Button onClick={handleCloseCreateModal}>Cancel</Button>
+            <Button variant="outlined" onClick={handleCloseCreateModal}>Cancel</Button>
             <Button
         onClick={handleSubmit}
-        style={{ color: "white", backgroundColor: "green" }}
+        variant="contained"
+        color="success"
       >
         Create
       </Button>
           </DialogActions>
           
-        </Dialog>
+      </Dialog>
      
+      <TableContainer component={Paper} className="mt-2">
+      <Table  aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Item Name</TableCell>
+            <TableCell align="">Stocks</TableCell>
+            <TableCell align="">Last Modified</TableCell>
+            <TableCell align="right"></TableCell>
+
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {filteredInventoryData.map((row) => (
+            <TableRow
+              key={row._id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.itemName}
+              </TableCell>
+              <TableCell align="">{row.quantity}</TableCell>
+              <TableCell align="">{formatDateTime(row.modifiedAt)}</TableCell>
+        
+              <TableCell align="right" className="flex g2">
+              <Button
+                size="small"
+                onClick={() =>
+                  handleAddInventory(
+                    row._id,
+                    row.itemName,
+                    row.quantity
+                  )
+                }
+                color="success"
+                variant="contained"
+              >
+                Add
+              </Button>
+              &nbsp;&nbsp;
+              <Button
+                size="small"
+                onClick={() =>
+                  handleLessInventory(
+                    row._id,
+                    row.itemName,
+                    row.quantity
+                  )
+                }
+                color="error"
+                variant="contained"
+              >
+                Less
+              </Button>
+              &nbsp;&nbsp;
+              <Button onClick={() => handleDelete(inventory._id)} variant="outlined">
+                Delete
+              </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
      
-     
-      {filteredInventoryData.map((inventory) => (
+      {/* {filteredInventoryData.map((inventory) => (
         <div key={inventory._id}>
           <hr />
-          <div className="d-flex space-between">
+          <div className="flex space-between">
             <div>
               <div>Item Name: {inventory.itemName}</div>
               <div>In Stock: {inventory.quantity}</div>
@@ -232,7 +328,8 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
                     inventory.quantity
                   )
                 }
-                style={{ color: "white", backgroundColor: "green" }}
+                color="success"
+                variant="contained"
               >
                 Add
               </Button>
@@ -246,24 +343,74 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
                     inventory.quantity
                   )
                 }
-                style={{ color: "white", backgroundColor: "red" }}
+                color="error"
+                variant="contained"
               >
                 Less
               </Button>
-              <Button onClick={() => handleDelete(inventory._id)}>
+              &nbsp;&nbsp;
+              <Button onClick={() => handleDelete(inventory._id)} variant="outlined">
                 Delete
               </Button>
             </div>
           </div>
         </div>
-      ))}
+      ))} */}
       <div>
         <Dialog open={openAddModal} onClose={handleCloseAddModal} fullWidth>
           <DialogTitle>Add Inventory</DialogTitle>
           <DialogContent>
-            <p>Inventory ID: {selectedAddInventoryId}</p>
-            <p>Inventory Name: {selectedAddInventoryName}</p>
-            <p>In Stock: {selectedAddInventoryQty}</p>
+            <div>
+            <div className="flex">
+            <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Inventory ID:
+              </Typography>
+              &nbsp;
+              <Typography
+                sx={{ fontSize: 14 }}
+                gutterBottom
+              >
+                {selectedAddInventoryId}
+              </Typography>
+            </div>
+              <div className="flex">
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Inventory Name:
+              </Typography>
+              &nbsp;
+              <Typography
+                sx={{ fontSize: 14 }}
+                gutterBottom
+              >
+                {selectedAddInventoryName}
+              </Typography>
+              </div>
+            <div className="flex">
+            <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                In Stock:
+              </Typography>
+              &nbsp;
+              <Typography
+                sx={{ fontSize: 14 }}
+                gutterBottom
+              >
+                {selectedAddInventoryQty}
+              </Typography>
+            </div>
+            </div>
+            <div className="mt-2"></div>
             <TextField
               label="Quantity"
               type="number"
@@ -273,12 +420,13 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseAddModal}>Cancel</Button>
+            <Button variant="outlined" onClick={handleCloseAddModal}>Cancel</Button>
             <Button
-              style={{ color: "white", backgroundColor: "green" }}
+              color="success"
               onClick={() => handleAdd(selectedAddInventoryId)}
+              variant="contained"
             >
-              Submit
+              Add
             </Button>
           </DialogActions>
         </Dialog>
@@ -286,9 +434,55 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
         <Dialog open={openLessModal} onClose={handleCloseLessModal} fullWidth>
           <DialogTitle>Less Inventory</DialogTitle>
           <DialogContent>
-            <p>Inventory ID: {selectedLessInventoryId}</p>
-            <p>Inventory Name: {selectedLessInventoryName}</p>
-            <p>In stock: {selectedLessInventoryQty}</p>
+          <div className="flex">
+            <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Inventory ID:
+              </Typography>
+              &nbsp;
+              <Typography
+                sx={{ fontSize: 14 }}
+                gutterBottom
+              >
+                {selectedLessInventoryId}
+              </Typography>
+            </div>
+            <div className="flex">
+            <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Inventory Name:
+              </Typography>
+              &nbsp;
+              <Typography
+                sx={{ fontSize: 14 }}
+                gutterBottom
+              >
+                {selectedLessInventoryName}
+              </Typography>
+            </div>
+            <div className="flex">
+            <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                In stock:
+              </Typography>
+              &nbsp;
+              <Typography
+                sx={{ fontSize: 14 }}
+                gutterBottom
+              >
+                {selectedLessInventoryQty}
+              </Typography>
+            </div>
+            <div className="mt-2"></div>
             <TextField
               label="Quantity"
               type="number"
@@ -298,12 +492,13 @@ const InventoryManage = ({ serverAPI, workDataFetch }) => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseLessModal}>Cancel</Button>
+            <Button variant="outlined"  onClick={handleCloseLessModal}>Cancel</Button>
             <Button
-              style={{ color: "white", backgroundColor: "red" }}
+              color="error"
               onClick={() => handleLess(selectedLessInventoryId)}
+              variant="contained"
             >
-              Submit
+              Less
             </Button>
           </DialogActions>
         </Dialog>
