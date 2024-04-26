@@ -23,7 +23,7 @@ import {
   TextField, // Import TextField from Material-UI
 } from "@mui/material";
 
-const inventoryLogs = ({serverAPI,formatDateTime,inventoryLogs }) => {
+const inventoryLogs = ({serverAPI,formatDateTime,inventoryLogs,CookieUserId,CookieUserName,CookieUserRole,CookieUserEmail,CookieId }) => {
     const [searchQuery, setSearchQuery] = useState('');
     
       

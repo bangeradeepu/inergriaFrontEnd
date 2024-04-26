@@ -22,7 +22,7 @@ import {
   TextField, // Import TextField from Material-UI
 } from "@mui/material";
 
-const InventoryManage = ({ serverAPI, workDataFetch }) => {
+const InventoryManage = ({ serverAPI, workDataFetch,CookieUserId,CookieUserName,CookieUserRole,CookieUserEmail,CookieId }) => {
   const navigate = useNavigate();
   const [itemName, setItemName] = useState("");
   const [quantity, setQuantity] = useState("");

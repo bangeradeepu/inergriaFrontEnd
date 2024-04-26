@@ -28,7 +28,7 @@ import {
 
 
 
-const Users = ({serverAPI,formatDateTime}) => {
+const Users = ({serverAPI,formatDateTime,CookieUserId,CookieUserName,CookieUserRole,CookieUserEmail,CookieId}) => {
     const [openAddModal, setOpenAddModal] = useState(false);
     const handleAddUser = () => {
         setOpenAddModal(true);
@@ -327,7 +327,7 @@ const Users = ({serverAPI,formatDateTime}) => {
 
 
         <Dialog open={openEditModal} onClose={handleCloseEdit} fullWidth>
-          <DialogTitle>Add User</DialogTitle>
+          <DialogTitle>Update User</DialogTitle>
           <DialogContent>
           <TextField
                         sx={{ marginTop: 2 }}
