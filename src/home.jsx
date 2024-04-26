@@ -15,8 +15,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useNavigate } from 'react-router-dom';
 
-const home = ({ serverAPI, workDataFetch, setWorkDataFetch, invertories }) => {
+const home = ({ serverAPI, workDataFetch, setWorkDataFetch, invertories,inventoryLogs }) => {
+  const navigate = useNavigate();
   const [textFeild, setTextFeild] = useState("");
   const handleSubmit = async () => {
     try {
@@ -126,7 +128,7 @@ const home = ({ serverAPI, workDataFetch, setWorkDataFetch, invertories }) => {
               <Box sx={{ maxHeight: "500px", overflow: "auto" }}>
                 <Table aria-label="simple table">
                   <TableBody>
-                    {invertories.map((row) => (
+                    {inventoryLogs.slice(0, 20).map((row) => (
                       <TableRow
                         key={row._id}
                         sx={{
@@ -136,7 +138,13 @@ const home = ({ serverAPI, workDataFetch, setWorkDataFetch, invertories }) => {
                         <TableCell component="th" scope="row">
                           {row.itemName}
                         </TableCell>
-                        <TableCell align="right">{row.quantity}</TableCell>
+                        <TableCell align="right">
+                        {row.stocksStatus === 'INC' ? (
+                <Typography sx={{ fontSize: 18, fontWeight: 'bold' }} className="primary">+ {row.stocks}</Typography>
+              ) : row.stocksStatus === 'DEC' ? (
+                <Typography sx={{ fontSize: 18, fontWeight: 'bold' }} className="red">- {row.stocks}</Typography>
+              ) : null}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -144,7 +152,7 @@ const home = ({ serverAPI, workDataFetch, setWorkDataFetch, invertories }) => {
               </Box>
             </CardContent>
             <CardActions>
-              <Button size="small">View More</Button>
+              <Button size="small" onClick={() => navigate('/inventoryLogs')}>View More</Button>
             </CardActions>
           </Card>
         </div>
@@ -215,7 +223,7 @@ const home = ({ serverAPI, workDataFetch, setWorkDataFetch, invertories }) => {
               </Table>
             </CardContent>
             <CardActions>
-              <Button size="small">Go to Stock Management</Button>
+              <Button size="small"  onClick={() => navigate('/upcomingList')}>Go to Stock Management</Button>
             </CardActions>
           </Card>
         </div>

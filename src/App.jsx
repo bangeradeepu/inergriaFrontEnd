@@ -6,6 +6,7 @@ import WorkList from "./workList";
 import Home from "./home";
 import Schedule from "./schedule";
 import Inventory from "./inventoryManage";
+import Users from "./Users";
 import {
   Drawer,
   Box,
@@ -21,6 +22,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import WorkIcon from "@mui/icons-material/Work";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import MenuIcon from "@mui/icons-material/Menu";
+import InventoryLogs from './inventoryLogs';
+import GroupsIcon from '@mui/icons-material/Groups';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const App = () => {
   const [open, setOpen] = React.useState(false);
@@ -55,6 +60,44 @@ const App = () => {
     };
     fetchInventory();
   }, []);
+  const formatDateTime = (dateString) => {
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const date = new Date(dateString);
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 || 12; // Convert 24-hour time to 12-hour time
+    return `${dayOfWeek}, ${day}/${month}/${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
+  };
+  const [inventoryLogs, setInventoryLogs] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`${serverAPI}/api/inventoryLogs`);
+            // Sort the data in descending order based on createdAt
+            const sortedData = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setInventoryLogs(sortedData);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+      
+        fetchData();
+      }, []);
   return (
     <div>
       <Router>
@@ -87,9 +130,9 @@ const App = () => {
               >
                 <ListItem button>
                   <ListItemIcon>
-                    <WorkIcon />
+                    <CalendarMonthIcon />
                   </ListItemIcon>
-                  <ListItemText primary="WorkList" />
+                  <ListItemText primary="Services" />
                 </ListItem>
               </Link>
               <Link
@@ -100,9 +143,33 @@ const App = () => {
                   <ListItemIcon>
                     <InventoryIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Inventory Manage" />
+                  <ListItemText primary="Inventory" />
                 </ListItem>
               </Link>
+              <Link
+                to="/inventory"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <GroupsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Clients" />
+                </ListItem>
+              </Link>
+              <Link
+                to="/users"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <PeopleAltIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Users" />
+                </ListItem>
+                
+              </Link>
+              
             </List>
             <Divider />
           </Box>
@@ -118,6 +185,7 @@ const App = () => {
                 workDataFetch={workDataFetch}
                 setWorkDataFetch={setWorkDataFetch}
                 invertories={inventories}
+                inventoryLogs={inventoryLogs}
               />
             }
           ></Route>
@@ -141,10 +209,16 @@ const App = () => {
           <Route
             path="/inventory"
             element={
-              <Inventory serverAPI={serverAPI} workDataFetch={workDataFetch} />
+              <Inventory serverAPI={serverAPI} workDataFetch={workDataFetch}  />
             }
           ></Route>
-         
+          <Route path="/inventoryLogs" element={<InventoryLogs serverAPI={serverAPI} formatDateTime={formatDateTime} inventoryLogs={inventoryLogs} />}></Route>
+          <Route
+            path="/users"
+            element={
+              <Users serverAPI={serverAPI} workDataFetch={workDataFetch} formatDateTime={formatDateTime} />
+            }
+          ></Route>
         </Routes>
         </div>
       </Router>

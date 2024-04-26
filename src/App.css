@@ -209,6 +209,10 @@
   .primary-bg{
     color: rgb(37, 153, 37);
   }
+  .red{
+    color: red;
+  }
+  
 .box-1{
   width: 50%;
 }
